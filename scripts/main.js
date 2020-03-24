@@ -1,27 +1,86 @@
-const bacter = document.getElementById('bacter');
-const pole = document.getElementById('pole');
-bacter.style.top = '100px';
-bacter.style.left = '100px';
+const eatAll = document.getElementById('eat');
+const populAll = document.getElementById('popul');
+const petri = document.getElementById('petri');
+const stop = document.getElementById('stop');
+const clear = document.getElementById('clear');
 
-const move = (element, x, y) => {
-    if (y-parseInt(element.style.top)>0) {
-        element.style.top = parseInt(element.style.top)+Math.round(Math.random())+2+'px';
-    } else {
-        element.style.top = parseInt(element.style.top)-Math.round(Math.random())-2+'px';
-    }
 
-    if (x-parseInt(element.style.left)>0) {
-        element.style.left = parseInt(element.style.left)+Math.round(Math.random())+2+'px';
+
+const moveBacter = (bacter)=>{
+    let random = Math.round(Math.random()*100);
+    if (random<25){
+        if (parseInt(bacter.style.gridColumn)===100) {
+            bacter.style.gridColumn = 1 + "/ auto";
+        } else {
+            bacter.style.gridColumn = parseInt(bacter.style.gridColumn)+1 +"/ auto";
+        }
+    } else if (random>=25 && random<50){
+        if (parseInt(bacter.style.gridColumn)===1) {
+            bacter.style.gridColumn = 100 + "/ auto";
+        } else {
+            bacter.style.gridColumn = parseInt(bacter.style.gridColumn)-1 +"/ auto";
+        }
+    } else if (random>=50 && random<75){
+        if (parseInt(bacter.style.gridRow)===100) {
+            bacter.style.gridRow = 1 + "/ auto";
+        } else {
+            bacter.style.gridRow = parseInt(bacter.style.gridRow)+1 +"/ auto";
+        }
     } else {
-        element.style.left = parseInt(element.style.left)-Math.round(Math.random())-2+'px';
+        if (parseInt(bacter.style.gridRow)===1) {
+            bacter.style.gridRow = 100 + "/ auto";
+        } else {
+            bacter.style.gridRow = parseInt(bacter.style.gridRow)-1 +"/ auto";
+        }
     }
 };
 
-// setInterval(() => {move(bacter)}, 10);
+const life = () => {
+    const bacterAll = document.querySelectorAll('.bacter');
+    for (let i=bacterAll.length-1; i>=0; i--){
+        timer = setInterval(() => {moveBacter(bacterAll[i])}, 100);
+    }
+};
 
-pole.addEventListener("mousemove", (e) => {
-    let x = e.clientX;
-    let y = e.clientY;
-    console.log(x, y);
-    move(bacter, x, y);
+class createElement{
+    constructor(itemClass, count){
+        this.itemClass = itemClass;
+        this.count = count;
+    }
+    create() {
+        for (let i=this.count; i>0 ; i--){
+            let el = document.createElement('div');
+            el.className = this.itemClass;
+            el.style.gridArea = `${Math.round(Math.random()*100)+1} / ${Math.round(Math.random()*100)+1}`;
+            petri.append(el);
+        }
+    }
+}
+
+
+
+document.addEventListener("submit", (event)=>{
+    event.preventDefault();
+    let element = new createElement('bacter', populAll.value);
+    element.create();
+    element = new createElement('eat', eatAll.value);
+    element.create();
+    life();
 });
+
+clear.addEventListener("click", ()=>{
+    function clearPetri() {
+        const elements = petri.children;
+        for (let i=elements.length-1; i>=0; i--) {
+            elements[i].remove();
+        }
+    }
+    clearPetri();
+});
+
+stop.addEventListener("click", ()=>{
+
+});
+
+
+

@@ -8,10 +8,22 @@
 
 </head>
 <body>
-    <form>
+    <div class="adminPanel">
+        <form id="parametr" method="post">
+        <div>
+            <label for="eat">Количество еды: <input type="number" id="eat" value="100"></label>
+            <br>
+            <label for="popul">Количество Бактерий: <input type="number" id="popul" value="100"></label>
+        </div>
+        <input id="start" type="submit" value="Start">
+            <input id="stop" type="button" value="Stop">
+            <input id="clear" type="button" value="Clear">
+        </form>
+    </div>
 
-    </form>
-    <div id="pole"><i id="bacter" class="fas fa-certificate"></i></div>
+    <div id="petri">
+    </div>
+
     <script src="scripts/main.js" type="text/javascript"></script>
 </body>
 </html>
