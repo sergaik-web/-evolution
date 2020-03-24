@@ -3,6 +3,9 @@ const populAll = document.getElementById('popul');
 const petri = document.getElementById('petri');
 const stop = document.getElementById('stop');
 const clear = document.getElementById('clear');
+const time = document.getElementById('time');
+let arBacter=[];
+let arEat = [];
 
 
 
@@ -36,11 +39,22 @@ const moveBacter = (bacter)=>{
 };
 
 const life = () => {
-    const bacterAll = document.querySelectorAll('.bacter');
-    for (let i=bacterAll.length-1; i>=0; i--){
-        timer = setInterval(() => {moveBacter(bacterAll[i])}, 100);
+    timer();
+};
+
+const timer = ()=> {
+    if (time.value === '0') {
+        return
+    } else {
+        const bacterAll = document.querySelectorAll('.bacter');
+        for (let i = bacterAll.length - 1; i >= 0; i--) {
+            moveBacter(bacterAll[i]);
+        }
+        setTimeout(() => {timer(time.value)}, time.value)
     }
 };
+
+
 
 class createElement{
     constructor(itemClass, count){
@@ -53,6 +67,7 @@ class createElement{
             el.className = this.itemClass;
             el.style.gridArea = `${Math.round(Math.random()*100)+1} / ${Math.round(Math.random()*100)+1}`;
             petri.append(el);
+            this.itemClass==='bacter' ? arBacter.push(el) : arEat.push(el);
         }
     }
 }
@@ -61,11 +76,15 @@ class createElement{
 
 document.addEventListener("submit", (event)=>{
     event.preventDefault();
-    let element = new createElement('bacter', populAll.value);
-    element.create();
-    element = new createElement('eat', eatAll.value);
-    element.create();
-    life();
+    if (document.querySelectorAll('.bacter').length>0){
+        life();
+    } else {
+        let element = new createElement('bacter', populAll.value);
+        element.create();
+        element = new createElement('eat', eatAll.value);
+        element.create();
+        life();
+    }
 });
 
 clear.addEventListener("click", ()=>{
@@ -79,7 +98,7 @@ clear.addEventListener("click", ()=>{
 });
 
 stop.addEventListener("click", ()=>{
-
+    time.value = 0;
 });
 
 
