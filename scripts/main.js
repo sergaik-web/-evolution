@@ -15,6 +15,21 @@ let arEat = [];
 const eatDetected = (bacter) => {
     let gridRow = parseInt(bacter.style.gridRow);
     let gridColumn = parseInt(bacter.style.gridColumn);
+    for (let i=0; i<arEat.length; i++){
+        let eatRow = parseInt(arEat[i].style.gridRow);
+        let eatColumn = parseInt(arEat[i].style.gridColumn);
+
+        if ((eatRow === gridRow || eatRow-gridRow===-1 || eatRow-gridRow===1) && ((eatColumn - gridColumn)===1 || (eatColumn - gridColumn)===2)){
+            return 20;
+        } else if ((eatRow === gridRow || eatRow-gridRow===-1 || eatRow-gridRow===1) && ((eatColumn - gridColumn)===-1 || (eatColumn - gridColumn)===-2)){
+            return 40;
+        } else if ((eatColumn === gridColumn || eatColumn-gridColumn===1 || eatColumn-gridColumn===-1)  && ((eatRow - gridRow)===1 || (eatRow - gridRow)===2)){
+            return 60;
+        } else if ((eatColumn === gridColumn || eatColumn-gridColumn===1 || eatColumn-gridColumn===-1) && ((eatRow - gridRow)===-1 || (eatRow - gridRow)===-1)){
+            return 80;
+        }
+    }
+    return -1;
 };
 
 const ripBacter = (bacter) =>{
@@ -54,7 +69,7 @@ const moveBacter = (bacter)=>{
 
 
     let random = eatDetected(bacter);
-    random = Math.round(Math.random()*100);
+    if (random===-1){random = Math.round(Math.random()*100);}
     if (random<25){
         if (parseInt(bacter.style.gridColumn)===100) {
             bacter.style.gridColumn = 1 + "/ auto";
