@@ -9,6 +9,8 @@ const countBacter = document.getElementById('countBacter');
 const countEat = document.getElementById('countEat');
 let arBacter=[];
 let arEat = [];
+let count=0;
+let dataAr = [['ход', 'еды', 'бактерий'],[0,0,0]];
 
 
 
@@ -105,19 +107,25 @@ const life = () => {
 const timer = ()=> {
     countBacter.textContent=arBacter.length;
     countEat.textContent=arEat.length;
-    if (time.value === '0') {
-        return
-    } else {
-        const bacterAll = document.querySelectorAll('.bacter');
-        for (let i = bacterAll.length - 1; i >= 0; i--) {
-            moveBacter(bacterAll[i]);
-        }
-        if (Math.round(Math.random()*100)>80){
-            let element = new createElement('eat', 2);
-            element.create();
-        }
-        setTimeout(() => {timer(time.value)}, time.value)
+
+    if (time.value === '0') {return}
+
+    const bacterAll = document.querySelectorAll('.bacter');
+
+    for (let i = bacterAll.length - 1; i >= 0; i--) {
+        moveBacter(bacterAll[i]);
     }
+
+    if (Math.round(Math.random() * 100) > 80) {
+        let element = new createElement('eat', 2);
+        element.create();
+    }
+
+    count++;
+    dataAr.push([count, arEat.length, arBacter.length]);
+    if (count%10===0) {google.charts.setOnLoadCallback(drawChart)};
+
+    setTimeout(() => {timer(time.value)}, time.value)
 };
 
 
@@ -187,3 +195,19 @@ stop.addEventListener("click", ()=>{
 
 
 
+const drawChart = () => {
+    let data = google.visualization.arrayToDataTable(dataAr);
+    // Define the chart to be drawn.
+    let options = {
+        title: 'Отношение еды к популяции',
+        legend: { position: 'bottom' }
+    };
+
+    // Instantiate and draw the chart.
+    let chart = new google.visualization.LineChart(document.getElementById('myPieChart'));
+    chart.draw(data, options);
+};
+
+google.charts.load('current', {packages: ['corechart'], 'language' : 'ru'});
+
+google.charts.setOnLoadCallback(drawChart);
