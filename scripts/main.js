@@ -1,8 +1,8 @@
-// Variable
 // Class
 import { createElement } from './createElement.js';
+export { arBacter, arEat };
 
-
+// Variable
 const eatAll = document.getElementById('eat');
 const populAll = document.getElementById('popul');
 const petri = document.getElementById('petri');
@@ -11,11 +11,10 @@ const clear = document.getElementById('clear');
 const time = document.getElementById('time');
 const countBacter = document.getElementById('countBacter');
 const countEat = document.getElementById('countEat');
-const arBacter = [];
-const arEat = [];
+let arBacter = [];
+let arEat = [];
 let count = 0;
 let dataAr = [['ход', 'еды', 'бактерий'], [0, 0, 0]];
-
 
 // Function
 const eatDetected = (bacter) => {
@@ -129,7 +128,7 @@ const timer = () => {
 
   setTimeout(() => { timer(time.value); }, time.value);
 };
-export { arBacter, arEat };
+
 
 
 // EventListener
